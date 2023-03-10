@@ -220,13 +220,12 @@ public:
 	{
 		this->handle = info.handle;
 		this->name = info.name;
-		debug_log( "setup module: {} -> {:#08X}", this->name, reinterpret_cast< std::uintptr_t >( this->handle ) );
+		debug_log( "setup module: {} -> [{:#08X}]", this->name, reinterpret_cast< std::uintptr_t >( this->handle ) );
 	}
 
-	template<typename t = std::uintptr_t>
-	t find_pattern( const std::string_view pattern, std::uintptr_t offset = 0x0 )
+	std::uintptr_t find_pattern( const std::string_view pattern, std::uintptr_t offset = 0x0 )
 	{
-		return static_cast< t >( c_memory::find_pattern( this->name, pattern ) + offset );
+		return c_memory::find_pattern( this->name, pattern ) + offset;
 	}
 
 	void* get_handle( )
@@ -277,7 +276,7 @@ public:
 				auto interface_pointer = register_list->create_fn( );
 
 				// log interface address
-				debug_log( "found {} interface -> {:#08x}", register_list->name, reinterpret_cast< std::uintptr_t >( interface_pointer ) );
+				debug_log( "found {} interface -> [{:#08x}]", register_list->name, reinterpret_cast< std::uintptr_t >( interface_pointer ) );
 
 				return static_cast< t* >( interface_pointer );
 			}

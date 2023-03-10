@@ -113,7 +113,7 @@ std::uintptr_t c_memory::find_pattern( const std::string_view module_name, const
     void* module_base = get_module_handle( module_name.data( ) ).handle;
 
     if ( module_base == nullptr )
-        throw std::runtime_error( std::vformat( "Failed to get handle for: {}", std::make_format_args( module_name ) ) );
+        throw std::runtime_error( std::vformat( "failed to get handle for: {}", std::make_format_args( module_name ) ) );
 
     const std::uint8_t* module_address = static_cast< std::uint8_t* >( module_base );
     const IMAGE_DOS_HEADER* dos_header = static_cast< IMAGE_DOS_HEADER* >( module_base );
@@ -144,7 +144,10 @@ std::uintptr_t c_memory::find_pattern( const std::uint8_t* region_start, const s
 
         // return valid address
         if ( found )
+        {
+            debug_log( "pattern [{}] found -> [{:#08x}]", pattern, reinterpret_cast< std::uintptr_t >( &region_start[ i ] ) );
             return reinterpret_cast< std::uintptr_t >( &region_start[ i ] );
+        }
     }
 
     error_log( "pattern not found: [{}]", pattern );
