@@ -12,7 +12,7 @@ bool c_game_interfaces::setup( )
 		capture_interface( this->panel, i_panel, vgui2_dll, "VGUI_Panel" );
 		capture_interface( this->engine, i_engine_client, engine_dll, "VEngineClient" );
 
-		capture_ptr( device, **reinterpret_cast< IDirect3DDevice9*** >( g_game_modules->get( shaderpidx9_dll ).find_pattern( "A1 ? ? ? ? 50 8B 08 FF 51 0C" ), 0x1 ) );
+		capture_ptr( device, **reinterpret_cast< IDirect3DDevice9*** >( g_game_modules->get( shaderpidx9_dll ).find_pattern( "A1 ? ? ? ? 50 8B 08 FF 51 0C", 0x1 ) ) );
 
 
 
