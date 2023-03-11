@@ -46,7 +46,7 @@ public:
 	template<typename t>
 	t* get_interface( const std::string_view name )
 	{
-		debug_log( "finding [{}] exportex interface from [{}]", name.data( ), this->name );
+		debug_log( "finding [{}] exported interface from [{}]", name.data( ), this->name );
 
 		const auto get_register_list = [this]( ) -> c_interface_register*
 		{
