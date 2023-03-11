@@ -2,8 +2,8 @@
 
 // used:std::unordered_map
 #include <unordered_map>
-// used: c_memory
-#include "../utilities/memory.h"
+// used: c_memory and c_game_modules
+#include "../utilities/modules.h"
 
 // including all interfaces class
 #include "interfaces/ibaseclient.h"

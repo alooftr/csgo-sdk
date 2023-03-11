@@ -5,7 +5,7 @@
 // used: vector struct
 #include "data_types/vector.h"
 // used: c_memory
-#include "../utilities/memory.h"
+#include "../utilities/modules.h"
 // used: data_map_t
 #include "data_types/map.h"
 // used: c_bf_read, c_bf_write

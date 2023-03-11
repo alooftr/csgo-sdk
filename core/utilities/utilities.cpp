@@ -1,8 +1,8 @@
 #include "utilities.h"
 // used: pe32 header
 #include "pe32.h"
-// used c_memory
-#include "memory.h"
+// used g_game_modules
+#include "modules.h"
 
 std::filesystem::path g_utils::get_game_path( )
 {

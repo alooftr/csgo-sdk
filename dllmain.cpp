@@ -2,8 +2,8 @@
 #include <thread>
 // used: logging namespace
 #include "core/utilities/logging.h"
-// used: g_mem pointer for get module
-#include "core/utilities/memory.h"
+// used: c_memory pointer for get module
+#include "core/utilities/modules.h"
 // used: g_modules && g_interfaces
 #include "core/sdk/csgo.h"
 // used: netvar

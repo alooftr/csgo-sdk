@@ -198,10 +198,12 @@
     <ClInclude Include="core\sdk\interfaces\isurface.h" />
     <ClInclude Include="core\sdk\netvar\netvar.h" />
     <ClInclude Include="core\utilities\crc32.h" />
+    <ClInclude Include="core\utilities\detour_hook.h" />
     <ClInclude Include="core\utilities\fnv1a.h" />
     <ClInclude Include="core\utilities\logging.h" />
     <ClInclude Include="core\utilities\math.h" />
     <ClInclude Include="core\utilities\memory.h" />
+    <ClInclude Include="core\utilities\modules.h" />
     <ClInclude Include="core\utilities\pe32.h" />
     <ClInclude Include="core\utilities\utilities.h" />
     <ClInclude Include="core\utilities\xor_str.h" />
@@ -247,6 +249,7 @@
     <ClCompile Include="core\utilities\math.cpp" />
     <ClCompile Include="core\utilities\memory.cpp" />
     <ClCompile Include="core\sdk\netvar\netvar.cpp" />
+    <ClCompile Include="core\utilities\modules.cpp" />
     <ClCompile Include="core\utilities\utilities.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ext\imgui\console\imgui_console.cpp" />
