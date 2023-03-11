@@ -168,6 +168,81 @@
     <ClInclude Include="core\sdk\data_types\matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\sdk\data_types\utl_memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\utl_vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\user_cmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\convar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\ikeyvaluesys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\key_value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\ientitylist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\bitbuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\definitions\definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\studio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\imodelinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\ienginetrace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\igametypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\utilities\math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\imdlcache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\iclientmodeshared.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\iconvar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\ipropphysics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\data_types\string_struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\irefcount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\iglobalvars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\ilocalize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sdk\interfaces\iprediction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -234,6 +309,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\utilities\crc32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\sdk\data_types\key_value.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\sdk\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\utilities\math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

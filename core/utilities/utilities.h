@@ -5,7 +5,9 @@
 
 #include "../common.h"
 
-namespace utils
+#include "../sdk/data_types/vector.h"
+
+namespace g_utils
 {
 	std::filesystem::path get_game_path( );
 
@@ -29,4 +31,6 @@ namespace utils
 		fi.dwTimeout = 0;
 		FlashWindowEx( &fi );
 	}
+
+	bool line_goes_through_smoke( const vec3_t& start, const vec3_t& end, const bool grenade_bloat = true );
 }

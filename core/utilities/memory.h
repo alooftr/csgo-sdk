@@ -86,7 +86,26 @@ public:
     static std::uintptr_t find_pattern( const std::string_view module_name, const std::string_view pattern );
     static std::uintptr_t find_pattern( const std::uint8_t* region_start, const std::uintptr_t region_size, const std::string_view pattern );
 
-    /// @returns : virtual function pointer of specified class at given index
+	/// @returns : absolute address from relative address
+	template <typename t>
+	static constexpr auto get_absolute( uintptr_t address ) noexcept
+	{
+		return ( t )( address + 4 + *reinterpret_cast< std::int32_t* >( address ) );
+	}
+
+	/// @returns : all cross-references (x-refs) addresses in given range
+	std::vector<std::uintptr_t> GetCrossReferences( const std::uintptr_t uAddress, std::uintptr_t uRegionStart, const std::size_t uRegionSize );
+	/// @param szSectionName : section to get info of (e.g. ".rdata", ".text", etc)
+	/// @param puSectionStart : output for section start address
+	/// @param puSectionSize : output for section size
+	/// @returns : true if section has been found
+	bool GetSectionInfo( const std::uintptr_t uBaseAddress, const std::string_view szSectionName, std::uintptr_t* puSectionStart, std::uintptr_t* puSectionSize );
+	/// @returns : type descriptor address of given vtable name in given module
+	std::uintptr_t GetVTableTypeDescriptor( const std::string_view szModuleName, const std::string_view szTableName );
+	/// @returns : pointer of given vtable name in given module @credits: hinnie
+	std::uintptr_t* GetVTablePointer( const std::string_view szModuleName, const std::string_view szTableName );
+
+	/// @returns : virtual function pointer of specified class at given index
     template <typename T = void*>
     static constexpr T get_vfunc( void* this_ptr, std::size_t index )
     {
@@ -104,6 +123,7 @@ public:
     /* misc: converter */
     /* todo: bytes to pattern... */
     static std::vector<std::optional<std::uint8_t>> pattern_to_bytes( const std::string_view pattern );
+	static std::string bytes_to_pattern( const std::uint8_t* bytes, const std::size_t size );
 };
 
 /*
@@ -220,7 +240,7 @@ public:
 	{
 		this->handle = info.handle;
 		this->name = info.name;
-		debug_log( "setup module: {} -> [{:#08X}]", this->name, reinterpret_cast< std::uintptr_t >( this->handle ) );
+		debug_log_ok( "setup module: {} -> [{:#08X}]", this->name, reinterpret_cast< std::uintptr_t >( this->handle ) );
 	}
 
 	std::uintptr_t find_pattern( const std::string_view pattern, std::uintptr_t offset = 0x0 )
@@ -251,6 +271,8 @@ public:
 	template<typename t>
 	t* get_interface( const std::string_view name )
 	{
+		debug_log( "finding [{}] exportex interface from [{}]", name.data( ), this->name );
+
 		const auto get_register_list = [this]( ) -> c_interface_register*
 		{
 			void* o_create_interface = c_memory::get_proc_address( this->handle, "CreateInterface" );
@@ -276,7 +298,7 @@ public:
 				auto interface_pointer = register_list->create_fn( );
 
 				// log interface address
-				debug_log( "found {} interface -> [{:#08x}]", register_list->name, reinterpret_cast< std::uintptr_t >( interface_pointer ) );
+				debug_log_ok( "found {} interface -> [{:#08x}]", register_list->name, reinterpret_cast< std::uintptr_t >( interface_pointer ) );
 
 				return static_cast< t* >( interface_pointer );
 			}

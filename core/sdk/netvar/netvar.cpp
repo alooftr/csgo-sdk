@@ -20,7 +20,7 @@ bool c_netvar_manager::setup( const char* file_name )
 
 #ifdef _DEBUG
 	// open our dump file to write in (here is not exception handle because dump is not critical)
-	dump_file.open( utils::get_game_path( ).append( file_name ), std::ios::out | std::ios::trunc );
+	dump_file.open( g_utils::get_game_path( ).append( file_name ), std::ios::out | std::ios::trunc );
 
 	if ( dump_file.good( ) )
 		// write current date, time and info

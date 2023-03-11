@@ -7,9 +7,7 @@
 
 module_handle_info_t c_memory::get_module_handle( const std::string_view module_name )
 {
-    const _PEB32* peb = reinterpret_cast< _PEB32* >( __readfsdword( 0x30 ) ); // mov eax, fs:[0x30]
-    //const _TEB32* pTEB = reinterpret_cast<_TEB32*>(__readfsdword(0x18)); // mov eax, fs:[0x18]
-    //const _PEB32* pPEB = pTEB->ProcessEnvironmentBlock;
+    const _PEB32* peb = reinterpret_cast< _PEB32* >( __readfsdword( 0x30 ) ); 
 
     if ( module_name.empty( ) )
         return { "image_base_address", peb->ImageBaseAddress };
@@ -108,6 +106,26 @@ std::vector<std::optional<std::uint8_t>> c_memory::pattern_to_bytes( const std::
     return bytes;
 }
 
+std::string c_memory::bytes_to_pattern( const std::uint8_t* bytes, const std::size_t size )
+{
+    constexpr const char* hex_digits = "0123456789ABCDEF";
+    const std::size_t hex_length = ( size << 1U ) + size;
+
+    // construct pre-reserved string filled with spaces
+    std::string pattern( hex_length - 1U, ' ' );
+
+    for ( std::size_t i = 0U, n = 0U; i < hex_length; n++, i += 3U )
+    {
+        const std::uint8_t current_byte = bytes[ n ];
+
+        // manually convert byte to chars
+        pattern[ i ] = hex_digits[ ( ( current_byte & 0xF0 ) >> 4 ) ];
+        pattern[ i + 1U ] = hex_digits[ ( current_byte & 0x0F ) ];
+    }
+
+    return pattern;
+}
+
 std::uintptr_t c_memory::find_pattern( const std::string_view module_name, const std::string_view pattern )
 {
     void* module_base = get_module_handle( module_name.data( ) ).handle;
@@ -119,6 +137,7 @@ std::uintptr_t c_memory::find_pattern( const std::string_view module_name, const
     const IMAGE_DOS_HEADER* dos_header = static_cast< IMAGE_DOS_HEADER* >( module_base );
     const IMAGE_NT_HEADERS* nt_headers = reinterpret_cast< const IMAGE_NT_HEADERS* >( module_address + dos_header->e_lfanew );
 
+    debug_log( "finding pattern [{}] from [{}]", pattern, module_name.data( ) );
     return find_pattern( module_address, nt_headers->OptionalHeader.SizeOfImage, pattern );
 }
 
@@ -145,12 +164,111 @@ std::uintptr_t c_memory::find_pattern( const std::uint8_t* region_start, const s
         // return valid address
         if ( found )
         {
-            debug_log( "pattern [{}] found -> [{:#08x}]", pattern, reinterpret_cast< std::uintptr_t >( &region_start[ i ] ) );
+            debug_log_ok( "found [{}] -> [{:#08x}]", pattern, reinterpret_cast< std::uintptr_t >( &region_start[ i ] ) );
             return reinterpret_cast< std::uintptr_t >( &region_start[ i ] );
         }
     }
 
     error_log( "pattern not found: [{}]", pattern );
     return 0U;
+}
+
+bool c_memory::get_section_info( const std::uintptr_t base_address, const std::string_view section_name, std::uintptr_t* section_start, std::uintptr_t* section_size )
+{
+    const IMAGE_DOS_HEADER* dos_header = reinterpret_cast< IMAGE_DOS_HEADER* >( base_address );
+    if ( dos_header->e_magic != IMAGE_DOS_SIGNATURE )
+        return false;
+
+    const IMAGE_NT_HEADERS* nt_headers = reinterpret_cast< IMAGE_NT_HEADERS* >( base_address + dos_header->e_lfanew );
+    if ( nt_headers->Signature != IMAGE_NT_SIGNATURE )
+        return false;
+
+    IMAGE_SECTION_HEADER* section_header = IMAGE_FIRST_SECTION( nt_headers );
+    std::uint16_t number_of_sections = nt_headers->FileHeader.NumberOfSections;
+
+    while ( number_of_sections > 0U )
+    {
+        // if we're at the right section
+        if ( section_name.starts_with( reinterpret_cast< const char* >( section_header->Name ) ) )
+        {
+            if ( section_start != nullptr )
+                *section_start = base_address + section_header->VirtualAddress;
+
+            if ( section_size != nullptr )
+                *section_size = section_header->SizeOfRawData;
+
+            return true;
+        }
+
+        section_header++;
+        number_of_sections--;
+    }
+
+    return false;
+}
+
+std::uintptr_t c_memory::get_vtable_type_descriptor( const std::string_view module_name, const std::string_view table_name )
+{
+    // type descriptor names look like this: '.?AVC_CSPlayer@@'
+    const std::string type_descriptor_name = std::string( ".?AV" ).append( table_name ).append( "@@" );
+    const std::string pattern = bytes_to_pattern( reinterpret_cast< const std::uint8_t* >( type_descriptor_name.data( ) ), type_descriptor_name.size( ) );
+
+    // get rtti type descriptor, located 0x8 bytes before the string
+    if ( const std::uintptr_t uTypeDescriptor = find_pattern( module_name, pattern ); uTypeDescriptor != 0U )
+        return uTypeDescriptor - 0x8;
+
+    error_log( "[error] virtual table type descriptor not found: [{}] [{}]", module_name, table_name );
+
+    return 0U;
+}
+
+std::uintptr_t* c_memory::get_vtable_pointer( const std::string_view module_name, const std::string_view table_name )
+{
+    const std::uintptr_t base_address = reinterpret_cast< std::uintptr_t >( get_module_handle( module_name ).handle );
+
+    if ( base_address == 0U )
+        return nullptr;
+
+    const std::uintptr_t type_descriptor = get_vtable_type_descriptor( module_name, table_name );
+
+    if ( type_descriptor == 0U )
+        return nullptr;
+
+    // we only need to get xrefs that are inside the .rdata section (there sometimes are xrefs in .text, so we have to filter them out)
+    std::uintptr_t r_data_start = 0U, r_data_size = 0U;
+    if ( !get_section_info( base_address, xor_str( ".rdata" ), &r_data_start, &r_data_size ) )
+        return nullptr;
+
+    // go through all xrefs of the type descriptor
+    for ( const auto& cross_reference : get_cross_references( type_descriptor, r_data_start, r_data_size ) )
+    {
+        // get offset of vtable in complete class, 0 means it's the class we need, and not some class it inherits from
+        if ( const int vtable_offset = *reinterpret_cast< int* >( cross_reference - 0x8 ); vtable_offset != 0 )
+            continue;
+
+        // get the object locator
+        const std::uintptr_t object_locator = cross_reference - 0xC;
+
+        // get a pointer to the vtable
+        std::string pattern = bytes_to_pattern( reinterpret_cast< const std::uint8_t* >( &object_locator ), sizeof( std::uintptr_t ) );
+        const std::uintptr_t vtable_address = find_pattern( reinterpret_cast< std::uint8_t* >( r_data_start ),r_data_size, pattern.c_str( ) ) + 0x4;
+
+        // check is valid offset
+        if ( vtable_address <= sizeof( std::uintptr_t ) )
+            return nullptr;
+
+        // check for .text section
+        std::uintptr_t text_start = 0U, text_size = 0U;
+        if ( !get_section_info( base_address, xor_str( ".text" ), &text_start, &text_size ) )
+            return nullptr;
+
+        // convert the vtable address to an ida pattern
+        pattern = bytes_to_pattern( reinterpret_cast< const std::uint8_t* >( &vtable_address ), sizeof( std::uintptr_t ) );
+        return reinterpret_cast< std::uintptr_t* >( find_pattern( reinterpret_cast< std::uint8_t* >( text_start ), text_size, pattern.c_str( ) ) );
+    }
+
+    error_log( "[error] virtual table pointer not found: [{}] [{}]", module_name, table_name );
+
+    return nullptr;
 }
 

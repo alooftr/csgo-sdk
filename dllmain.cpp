@@ -8,6 +8,8 @@
 #include "core/sdk/csgo.h"
 // used: netvar
 #include "core/sdk/netvar/netvar.h"
+// used: g_math
+#include "core/utilities/math.h"
 
 DWORD WINAPI on_attach( LPVOID parameter )
 {
@@ -33,11 +35,12 @@ DWORD WINAPI on_attach( LPVOID parameter )
 			if ( !g_game_interfaces->setup( ) )
 				throw std::runtime_error( xor_str( "failed to setup game interfaces" ) );
 
-			if ( !g_game_interfaces->setup( ) )
-				throw std::runtime_error( xor_str( "failed to setup game interfaces" ) );
-
 			if ( !g_netvar_manager->setup( xor_str( "sdk_netvar_dump.txt" ) ) )
 				throw std::runtime_error( xor_str( "failed to setup netvar manager" ) );
+
+			if ( !g_math::setup( ) )
+				throw std::runtime_error( xor_str( "failed to setup math library" ) );
+
 		}
 		time( &end );
 

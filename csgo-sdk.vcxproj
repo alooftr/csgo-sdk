@@ -162,20 +162,45 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="core\common.h" />
+    <ClInclude Include="core\sdk\animation.h" />
     <ClInclude Include="core\sdk\csgo.h" />
+    <ClInclude Include="core\sdk\data_types\bitbuf.h" />
     <ClInclude Include="core\sdk\data_types\color.h" />
+    <ClInclude Include="core\sdk\data_types\convar.h" />
+    <ClInclude Include="core\sdk\data_types\string_struct.h" />
+    <ClInclude Include="core\sdk\data_types\studio.h" />
+    <ClInclude Include="core\sdk\data_types\user_cmd.h" />
+    <ClInclude Include="core\sdk\data_types\key_value.h" />
     <ClInclude Include="core\sdk\data_types\map.h" />
     <ClInclude Include="core\sdk\data_types\matrix.h" />
     <ClInclude Include="core\sdk\data_types\table.h" />
+    <ClInclude Include="core\sdk\data_types\utl_memory.h" />
+    <ClInclude Include="core\sdk\data_types\utl_vector.h" />
     <ClInclude Include="core\sdk\data_types\vector.h" />
+    <ClInclude Include="core\sdk\definitions\definitions.h" />
+    <ClInclude Include="core\sdk\entity.h" />
     <ClInclude Include="core\sdk\interfaces\ibaseclient.h" />
+    <ClInclude Include="core\sdk\interfaces\iclientmodeshared.h" />
+    <ClInclude Include="core\sdk\interfaces\iconvar.h" />
     <ClInclude Include="core\sdk\interfaces\iengine.h" />
+    <ClInclude Include="core\sdk\interfaces\ienginetrace.h" />
+    <ClInclude Include="core\sdk\interfaces\ientitylist.h" />
+    <ClInclude Include="core\sdk\interfaces\igametypes.h" />
+    <ClInclude Include="core\sdk\interfaces\iglobalvars.h" />
+    <ClInclude Include="core\sdk\interfaces\ikeyvaluesys.h" />
+    <ClInclude Include="core\sdk\interfaces\ilocalize.h" />
+    <ClInclude Include="core\sdk\interfaces\imdlcache.h" />
+    <ClInclude Include="core\sdk\interfaces\imodelinfo.h" />
     <ClInclude Include="core\sdk\interfaces\ipanel.h" />
+    <ClInclude Include="core\sdk\interfaces\iprediction.h" />
+    <ClInclude Include="core\sdk\interfaces\ipropphysics.h" />
+    <ClInclude Include="core\sdk\interfaces\irefcount.h" />
     <ClInclude Include="core\sdk\interfaces\isurface.h" />
     <ClInclude Include="core\sdk\netvar\netvar.h" />
     <ClInclude Include="core\utilities\crc32.h" />
     <ClInclude Include="core\utilities\fnv1a.h" />
     <ClInclude Include="core\utilities\logging.h" />
+    <ClInclude Include="core\utilities\math.h" />
     <ClInclude Include="core\utilities\memory.h" />
     <ClInclude Include="core\utilities\pe32.h" />
     <ClInclude Include="core\utilities\utilities.h" />
@@ -215,8 +240,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\sdk\csgo.cpp" />
+    <ClCompile Include="core\sdk\data_types\key_value.cpp" />
+    <ClCompile Include="core\sdk\entity.cpp" />
     <ClCompile Include="core\utilities\crc32.cpp" />
     <ClCompile Include="core\utilities\logging.cpp" />
+    <ClCompile Include="core\utilities\math.cpp" />
     <ClCompile Include="core\utilities\memory.cpp" />
     <ClCompile Include="core\sdk\netvar\netvar.cpp" />
     <ClCompile Include="core\utilities\utilities.cpp" />

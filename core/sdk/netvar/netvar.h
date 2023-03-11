@@ -53,65 +53,65 @@ inline const std::unique_ptr<c_netvar_manager> g_netvar_manager{ new c_netvar_ma
 
 #pragma region netvar_definitions
 /* add function to get variable with additional offset from netvar offset */
-#define N_ADD_VARIABLE_OFFSET( type, function_name, net_var, additional )								\
+#define n_add_variable_offset( type, function_name, net_var, additional )								\
 	[[nodiscard]] std::add_lvalue_reference_t<type> function_name()										\
 	{																										\
 		static constexpr fnv1a_t hash = fnv1a::hash_const(net_var);										\
-		static std::uintptr_t offset = g_netvar_manager->).map_props[hash].offset;						\
+		static std::uintptr_t offset = g_netvar_manager->map_props[hash].offset;						\
 		return *(std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset + additional);	\
 	}
 
 /* add function to get netvar variable */
-#define N_ADD_VARIABLE( type, function_name, net_var ) N_ADD_VARIABLE_OFFSET( type, function_name, net_var, 0U )
+#define n_add_variable( type, function_name, net_var ) n_add_variable_offset( type, function_name, net_var, 0U )
 
 /* add function to get variable pointer with additional offset from netvar offset */
-#define N_ADD_PVARIABLE_OFFSET( type, function_name, net_var, additional )								\
+#define n_add_pvariable_offset( type, function_name, net_var, additional )								\
 	[[nodiscard]] std::add_pointer_t<type> function_name()													\
 	{																										\
 		static constexpr fnv1a_t hash = fnv1a::hash_const(net_var);										\
-		static std::uintptr_t offset = g_netvar_manager->).map_props[hash].offset;						\
+		static std::uintptr_t offset = g_netvar_manager->map_props[hash].offset;						\
 		return (std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset + additional);	\
 	}
 
 /* add function to get netvar variable pointer */
-#define N_ADD_PVARIABLE( type, function_name, net_var ) N_ADD_PVARIABLE_OFFSET( type, function_name, net_var, 0U )
+#define n_add_pvariable( type, function_name, net_var ) n_add_pvariable_offset( type, function_name, net_var, 0U )
 
 /* add function to get csplayerresource variable for entity by index from netvar offset */
-#define N_ADD_RESOURCE_VARIABLE( type, function_name, net_var )														\
+#define n_add_resource_variable( type, function_name, net_var )														\
 	[[nodiscard]] std::add_lvalue_reference_t<type> function_name(int index)											\
 	{																													\
 		static constexpr fnv1a_t hash = fnv1a::hash_const(net_var);													\
-		static std::uintptr_t offset = g_netvar_manager->).map_props[hash].offset;									\
+		static std::uintptr_t offset = g_netvar_manager->map_props[hash].offset;									\
 		return *(std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset + index * sizeof(type));	\
 	}
 
 /* add function to get datamap variable */
-#define N_ADD_DATAFIELD( type, function_name, map, szDataField )											\
+#define n_add_datafield( type, function_name, map, field )											\
 	[[nodiscard]] std::add_lvalue_reference_t<type> function_name()										\
 	{																										\
-		static constexpr fnv1a_t hash = fnv1a::hash_const(szDataField);										\
-		static std::uintptr_t offset = g_netvar_manager->).find_in_data_map(map, hash);					\
+		static constexpr fnv1a_t hash = fnv1a::hash_const(field);										\
+		static std::uintptr_t offset = g_netvar_manager->find_in_data_map(map, hash);					\
 		return *(std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset);				\
 	}
 
 /* add function to get datamap variable pointer */
-#define N_ADD_PDATAFIELD( type, function_name, map, szDataField )											\
+#define n_add_pdatafield( type, function_name, map, field )											\
 	[[nodiscard]] std::add_pointer_t<type> function_name()													\
 	{																										\
-		static constexpr fnv1a_t hash = fnv1a::hash_const(szDataField);										\
-		static std::uintptr_t offset = g_netvar_manager->).find_in_data_map(map, hash);					\
+		static constexpr fnv1a_t hash = fnv1a::hash_const(field);										\
+		static std::uintptr_t offset = g_netvar_manager->find_in_data_map(map, hash);					\
 		return (std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset);				\
 	}
 
 /* add function to get variable by offset */
-#define N_ADD_OFFSET( type, function_name, offset )														\
+#define n_add_offset( type, function_name, offset )														\
 	[[nodiscard]] std::add_lvalue_reference_t<type> function_name()										\
 	{																										\
 		return *(std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset);				\
 	}
 
 /* add function to get variable pointer by offset */
-#define N_ADD_POFFSET( type, function_name, offset )														\
+#define n_add_poffset( type, function_name, offset )														\
 	[[nodiscard]] std::add_pointer_t<type> function_name()													\
 	{																										\
 		return (std::add_pointer_t<type>)(reinterpret_cast<std::uintptr_t>(this) + offset);				\
