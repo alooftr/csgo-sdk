@@ -173,6 +173,33 @@ std::uintptr_t c_memory::find_pattern( const std::uint8_t* region_start, const s
     return 0U;
 }
 
+std::vector<std::uintptr_t> c_memory::get_cross_references( const std::uintptr_t address, std::uintptr_t region_start, const std::size_t region_size )
+{
+    std::vector<std::uintptr_t> cross_references = { };
+
+    // convert the address over to an ida pattern string
+    const std::string pattern = bytes_to_pattern( reinterpret_cast< const std::uint8_t* >( &address ), sizeof( std::uintptr_t ) );
+    // get the end of the section (in our case the end of the .rdata section)
+    const std::uintptr_t region_end = region_start + region_size;
+
+    while ( region_start > 0U && region_start < region_end )
+    {
+        // @todo: findpattern shouldn't report on fail
+        std::uintptr_t reference_address = find_pattern( reinterpret_cast< std::uint8_t* >( region_start ), region_size, pattern.c_str( ) );
+
+        // if the xref is 0 it means that there either were no xrefs, or there are no remaining xrefs
+        if ( reference_address == 0U )
+            break;
+
+        cross_references.push_back( reference_address );
+
+        // skip current xref for next search
+        region_start = reference_address + sizeof( std::uintptr_t );
+    }
+
+    return cross_references;
+}
+
 bool c_memory::get_section_info( const std::uintptr_t base_address, const std::string_view section_name, std::uintptr_t* section_start, std::uintptr_t* section_size )
 {
     const IMAGE_DOS_HEADER* dos_header = reinterpret_cast< IMAGE_DOS_HEADER* >( base_address );
