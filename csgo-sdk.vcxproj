@@ -185,6 +185,7 @@
     <ClInclude Include="core\sdk\interfaces\iengine.h" />
     <ClInclude Include="core\sdk\interfaces\ienginetrace.h" />
     <ClInclude Include="core\sdk\interfaces\ientitylist.h" />
+    <ClInclude Include="core\sdk\interfaces\ifilesystem.h" />
     <ClInclude Include="core\sdk\interfaces\igametypes.h" />
     <ClInclude Include="core\sdk\interfaces\iglobalvars.h" />
     <ClInclude Include="core\sdk\interfaces\ikeyvaluesys.h" />

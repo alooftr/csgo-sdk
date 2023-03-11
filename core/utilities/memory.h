@@ -28,6 +28,7 @@
 #define matchmaking_dll			xor_str("matchmaking.dll")
 #define server_dll				xor_str("server.dll")
 #define serverbrowser_dll		xor_str("serverbrowser.dll")
+#define filesystem_stdio_dll    xor_str("filesystem_stdio.dll")
 #pragma endregion
 
 /* virtualprotect raii wrapper */
@@ -53,13 +54,14 @@ private:
 
 struct module_handle_info_t
 {
-	module_handle_info_t( const char* name, void* handle ) : name{ name }, handle{ handle } { }
+	module_handle_info_t( const char* name, void* handle ) : name{ name }, handle{ handle }
+	{ }
 
 	const char* name = nullptr;
 	void* handle = nullptr;
 
 	constexpr explicit operator bool( ) noexcept
-	{ 
+	{
 		return handle != nullptr;
 	}
 
@@ -74,17 +76,17 @@ class c_memory
 public:
 	/* main */
 
-    /// @param moduleName : module name to search base handle for, empty means current module
-    /// @returns : base handle of given module name
-    static module_handle_info_t get_module_handle( const std::string_view module_name );
-    /// alternative of 'GetProcAddress()'
-    static void* get_proc_address( const void* module_base, const std::string_view procedure_name );
+	/// @param moduleName : module name to search base handle for, empty means current module
+	/// @returns : base handle of given module name
+	static module_handle_info_t get_module_handle( const std::string_view module_name );
+	/// alternative of 'GetProcAddress()'
+	static void* get_proc_address( const void* module_base, const std::string_view procedure_name );
 
-    /// ida style pattern byte comparison in specific module
-    /// @param moduleName : module name where search for pattern
-    /// @param pattern : ida style pattern, e.g. "55 8B 40 ? 30", wildcard can be either '?' or "??", blank delimiters are ignored  
-    static std::uintptr_t find_pattern( const std::string_view module_name, const std::string_view pattern );
-    static std::uintptr_t find_pattern( const std::uint8_t* region_start, const std::uintptr_t region_size, const std::string_view pattern );
+	/// ida style pattern byte comparison in specific module
+	/// @param moduleName : module name where search for pattern
+	/// @param pattern : ida style pattern, e.g. "55 8B 40 ? 30", wildcard can be either '?' or "??", blank delimiters are ignored  
+	static std::uintptr_t find_pattern( const std::string_view module_name, const std::string_view pattern );
+	static std::uintptr_t find_pattern( const std::uint8_t* region_start, const std::uintptr_t region_size, const std::string_view pattern );
 
 	/// @returns : absolute address from relative address
 	template <typename t>
@@ -105,21 +107,21 @@ public:
 	std::uintptr_t* get_vtable_pointer( const std::string_view module_name, const std::string_view table_name );
 
 	/// @returns : virtual function pointer of specified class at given index
-    template <typename T = void*>
-    static constexpr T get_vfunc( void* this_ptr, std::size_t index )
-    {
-        return ( *static_cast< T** >( this_ptr ) )[ index ];
-    }
-    // call virtual function of specified class at given index
-    // @note: references should be wrapped with std::ref call!
-    template <typename T, typename ... Args_t>
-    static constexpr T call_vfunc( void* this_ptr, std::size_t index, Args_t... arg_list )
-    {
-        using virtual_fn = T( __thiscall* )( void*, decltype( arg_list )... );
-        return ( *static_cast< virtual_fn** >( this_ptr ) )[ index ]( this_ptr, arg_list... );
-    }
+	template <typename T = void*>
+	static constexpr T get_vfunc( void* this_ptr, std::size_t index )
+	{
+		return ( *static_cast< T** >( this_ptr ) )[ index ];
+	}
+	// call virtual function of specified class at given index
+	// @note: references should be wrapped with std::ref call!
+	template <typename T, typename ... Args_t>
+	static constexpr T call_vfunc( void* this_ptr, std::size_t index, Args_t... arg_list )
+	{
+		using virtual_fn = T( __thiscall* )( void*, decltype( arg_list )... );
+		return ( *static_cast< virtual_fn** >( this_ptr ) )[ index ]( this_ptr, arg_list... );
+	}
 
-    /* misc: converter */
-    static std::vector<std::optional<std::uint8_t>> pattern_to_bytes( const std::string_view pattern );
+	/* misc: converter */
+	static std::vector<std::optional<std::uint8_t>> pattern_to_bytes( const std::string_view pattern );
 	static std::string bytes_to_pattern( const std::uint8_t* bytes, const std::size_t size );
 };

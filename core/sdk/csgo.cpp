@@ -20,6 +20,7 @@ bool c_game_interfaces::setup( )
 		capture_interface( this->localize, i_localize, localize_dll, "Localize_" );
 		capture_interface( this->prediction, i_prediction, client_dll, "VClientPrediction" );
 		capture_interface( this->game_movement, i_game_movement, client_dll, "GameMovement" );
+		capture_interface( this->file_system, i_file_system, filesystem_stdio_dll, "VBaseFileSystem011" );
 
 		capture_ptr( device, **reinterpret_cast< IDirect3DDevice9*** >( g_game_modules->get( shaderpidx9_dll ).find_pattern( "A1 ? ? ? ? 50 8B 08 FF 51 0C" ) + 0x1 ) );
 		capture_ptr( key_values_system, reinterpret_cast< key_values_system_fn >( g_game_modules->get( vstdlib_dll ).get_proc_address( "KeyValuesSystem" ) )( ) );

@@ -19,7 +19,7 @@
 #include "interfaces/iglobalvars.h"
 #include "interfaces/ilocalize.h"
 #include "interfaces/iprediction.h"
-
+#include "interfaces/ifilesystem.h"
 
 /* holding game's interfaces pointer */
 class c_game_interfaces
@@ -49,6 +49,7 @@ public:
 	i_move_helper* move_helper = nullptr;
 	i_prediction* prediction = nullptr;
 	i_game_movement* game_movement = nullptr;
+	i_file_system* file_system = nullptr;
 };
 
 // const pointer

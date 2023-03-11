@@ -2,7 +2,6 @@
 
 bool c_game_modules::setup( )
 {
-    /* modules list */
     modules[ engine_dll ] = c_memory::get_module_handle( engine_dll );
     modules[ client_dll ] = c_memory::get_module_handle( client_dll );
     modules[ localize_dll ] = c_memory::get_module_handle( localize_dll );
@@ -21,6 +20,7 @@ bool c_game_modules::setup( )
     modules[ matchmaking_dll ] = c_memory::get_module_handle( matchmaking_dll );
     modules[ server_dll ] = c_memory::get_module_handle( server_dll );
     modules[ serverbrowser_dll ] = c_memory::get_module_handle( serverbrowser_dll );
+    modules[ filesystem_stdio_dll ] = c_memory::get_module_handle( filesystem_stdio_dll );
 
     return !modules.empty( );
 }
