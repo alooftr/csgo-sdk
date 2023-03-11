@@ -120,7 +120,6 @@ public:
     }
 
     /* misc: converter */
-    /* todo: bytes to pattern... */
     static std::vector<std::optional<std::uint8_t>> pattern_to_bytes( const std::string_view pattern );
 	static std::string bytes_to_pattern( const std::uint8_t* bytes, const std::size_t size );
 };
