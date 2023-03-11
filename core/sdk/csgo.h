@@ -20,19 +20,6 @@
 #include "interfaces/ilocalize.h"
 #include "interfaces/iprediction.h"
 
-/* holding all the game's loaded module */
-class c_game_modules
-{
-public:
-	bool setup( );
-
-	auto get( std::string name )
-	{
-		return this->modules[ name ];
-	}
-private:
-	std::unordered_map<std::string, c_module> modules = { };
-};
 
 /* holding game's interfaces pointer */
 class c_game_interfaces
@@ -65,5 +52,4 @@ public:
 };
 
 // const pointer
-inline const std::unique_ptr<c_game_modules> g_game_modules{ new c_game_modules( ) };
 inline const std::unique_ptr<c_game_interfaces> g_game_interfaces{ new c_game_interfaces( ) };

@@ -303,7 +303,7 @@ public:
 			}
 		}
 
-		error_log( "failed to find interface \"{}\" in \"{}\"", name, this->name );
+		debug_log_error( "failed to find interface \"{}\" in \"{}\"", name, this->name );
 
 		return nullptr;
 	}
@@ -311,3 +311,19 @@ private:
     void* handle = nullptr;
 	const char* name = nullptr;
 };
+
+/* holding all the game's loaded module */
+class c_game_modules
+{
+public:
+	bool setup( );
+
+	auto get( std::string name )
+	{
+		return this->modules[ name ];
+	}
+private:
+	std::unordered_map<std::string, c_module> modules = { };
+};
+
+inline const std::unique_ptr<c_game_modules> g_game_modules{ new c_game_modules( ) };

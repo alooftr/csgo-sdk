@@ -23,7 +23,7 @@ std::filesystem::path g_utils::get_game_path( )
 bool g_utils::line_goes_through_smoke( const vec3_t& start, const vec3_t& end, const bool grenade_bloat )
 {
     using line_goes_through_smoke_fn = bool( __cdecl* )( vec3_t, vec3_t, bool );
-    static auto o_line_goes_through_smoke = reinterpret_cast< line_goes_through_smoke_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0" ) ); // @xref: "effects/overlaysmoke"
+    static auto o_line_goes_through_smoke = reinterpret_cast< line_goes_through_smoke_fn >( g_game_modules->get( client_dll ).find_pattern(  "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0" ) ); // @xref: "effects/overlaysmoke"
     assert( o_line_goes_through_smoke != nullptr );
 
     return o_line_goes_through_smoke( start, end, grenade_bloat );

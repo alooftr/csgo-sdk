@@ -25,12 +25,12 @@ bool c_game_interfaces::setup( )
 		capture_ptr( key_values_system, reinterpret_cast< key_values_system_fn >( g_game_modules->get( vstdlib_dll ).get_proc_address( "KeyValuesSystem" ) )( ) );
 		capture_ptr( client_mode, **reinterpret_cast< i_client_mode_shared*** >( c_memory::get_vfunc<std::uintptr_t>( client, 10 ) + 0x5 ) );
 		capture_ptr( client_state, **reinterpret_cast< i_client_state*** >( c_memory::get_vfunc<std::uintptr_t>( engine, 12 ) + 0x10 ) );
-		capture_ptr( weapon_system, *reinterpret_cast< i_weapon_system** >( c_memory::find_pattern( "client.dll", "8B 35 ? ? ? ? FF 10 0F B7 C0" ) + 0x2 ) );
+		capture_ptr( weapon_system, *reinterpret_cast< i_weapon_system** >( g_game_modules->get( client_dll ).find_pattern( "8B 35 ? ? ? ? FF 10 0F B7 C0" ) + 0x2 ) );
 		capture_ptr( global_vars, **reinterpret_cast< i_global_vars_base*** >( c_memory::get_vfunc<std::uintptr_t>( client, 11 ) + 0xA ) );
 	}
 	catch ( const std::exception& ex )
 	{
-		error_log( "[error] {}", ex.what( ) );
+		debug_log_error( "[error] {}", ex.what( ) );
 
 #ifdef _DEBUG
 		// show error message window (or replace to your exception handler)

@@ -183,7 +183,7 @@ public:
 
 	void setup_bones_for_attachment_queries( )
 	{
-		static auto setup_bones_for_attachment_queries_addr = c_memory::find_pattern( "client.dll", "55 8B EC 83 EC 14 83 3D ? ? ? ? ? 53" );
+		static auto setup_bones_for_attachment_queries_addr = g_game_modules->get( client_dll ).find_pattern(  "55 8B EC 83 EC 14 83 3D ? ? ? ? ? 53" );
 
 		assert( setup_bones_for_attachment_queries_addr != 0 );
 
@@ -192,7 +192,7 @@ public:
 
 	void set_merge_mdl( const char* model_path, void* custom_material_owner = nullptr, void* proxy_data = nullptr, const bool request_bone_merge_takeover = false )
 	{
-		static auto set_merge_mdl_addr = c_memory::find_pattern( "client.dll", "55 8B EC 57 8B F9 8B 0D ? ? ? ? 85 C9 75" );
+		static auto set_merge_mdl_addr = g_game_modules->get( client_dll ).find_pattern(  "55 8B EC 57 8B F9 8B 0D ? ? ? ? 85 C9 75" );
 
 		assert( set_merge_mdl_addr != 0 );
 

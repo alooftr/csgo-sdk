@@ -135,7 +135,7 @@ public:
 	void create( c_base_entity* entity )
 	{
 		using create_animation_state_fn = void( __thiscall* )( void*, c_base_entity* );
-		static auto o_create_animation_state = reinterpret_cast< create_animation_state_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 56 8B F1 B9 ? ? ? ? C7 46" ) ); // @xref: "ggprogressive_player_levelup"
+		static auto o_create_animation_state = reinterpret_cast< create_animation_state_fn >( g_game_modules->get( client_dll ).find_pattern( "55 8B EC 56 8B F1 B9 ? ? ? ? C7 46" ) ); // @xref: "ggprogressive_player_levelup"
 
 		if ( o_create_animation_state == nullptr )
 			return;
@@ -146,7 +146,7 @@ public:
 	void update( vec3_t view_angles )
 	{
 		using update_animation_state_fn = void( __vectorcall* )( void*, void*, float, float, float, void* );
-		static auto o_update_animation_state = reinterpret_cast< update_animation_state_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 F3 0F 11 54 24" ) ); // @xref: "%s_aim"
+		static auto o_update_animation_state = reinterpret_cast< update_animation_state_fn >( g_game_modules->get( client_dll ).find_pattern( "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 F3 0F 11 54 24" ) ); // @xref: "%s_aim"
 
 		if ( o_update_animation_state == nullptr )
 			return;
@@ -157,7 +157,7 @@ public:
 	void reset( )
 	{
 		using reset_animation_state_fn = void( __thiscall* )( void* );
-		static auto o_reset_animation_state = reinterpret_cast< reset_animation_state_fn >( c_memory::find_pattern( "client.dll", "56 6A 01 68 ? ? ? ? 8B F1" ) ); // @xref: "player_spawn"
+		static auto o_reset_animation_state = reinterpret_cast< reset_animation_state_fn >( g_game_modules->get( client_dll ).find_pattern( "56 6A 01 68 ? ? ? ? 8B F1" ) ); // @xref: "player_spawn"
 
 		if ( o_reset_animation_state == nullptr )
 			return;

@@ -22,7 +22,7 @@ module_handle_info_t c_memory::get_module_handle( const std::string_view module_
             return { module_name.data( ), entry->DllBase };
     }
 
-    error_log( "[error] module base not found: [{}]", module_name );
+    debug_log_error( "[error] module base not found: [{}]", module_name );
 
     return { nullptr, nullptr };
 }
@@ -63,7 +63,7 @@ void* c_memory::get_proc_address( const void* module_base, const std::string_vie
             right = middle;
     }
 
-    error_log( "[error] export not found: [{}]", procedure_name );
+    debug_log_error( "[error] export not found: [{}]", procedure_name );
 
     return nullptr;
 }
@@ -169,7 +169,7 @@ std::uintptr_t c_memory::find_pattern( const std::uint8_t* region_start, const s
         }
     }
 
-    error_log( "pattern not found: [{}]", pattern );
+    debug_log_error( "pattern not found: [{}]", pattern );
     return 0U;
 }
 
@@ -244,7 +244,7 @@ std::uintptr_t c_memory::get_vtable_type_descriptor( const std::string_view modu
     if ( const std::uintptr_t uTypeDescriptor = find_pattern( module_name, pattern ); uTypeDescriptor != 0U )
         return uTypeDescriptor - 0x8;
 
-    error_log( "[error] virtual table type descriptor not found: [{}] [{}]", module_name, table_name );
+    debug_log_error( "[error] virtual table type descriptor not found: [{}] [{}]", module_name, table_name );
 
     return 0U;
 }
@@ -294,7 +294,7 @@ std::uintptr_t* c_memory::get_vtable_pointer( const std::string_view module_name
         return reinterpret_cast< std::uintptr_t* >( find_pattern( reinterpret_cast< std::uint8_t* >( text_start ), text_size, pattern.c_str( ) ) );
     }
 
-    error_log( "[error] virtual table pointer not found: [{}] [{}]", module_name, table_name );
+    debug_log_error( "[error] virtual table pointer not found: [{}] [{}]", module_name, table_name );
 
     return nullptr;
 }

@@ -371,14 +371,14 @@ public:
 	void set_abs_origin( const vec3_t& origin )
 	{
 		using set_abs_origin_fn = void( __thiscall* )( void*, const vec3_t& );
-		static auto o_set_abs_origin = reinterpret_cast< set_abs_origin_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8" ) );
+		static auto o_set_abs_origin = reinterpret_cast< set_abs_origin_fn >( g_game_modules->get( client_dll ).find_pattern( "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8" ) );
 		o_set_abs_origin( this, origin );
 	}
 
 	void set_abs_angles( const vec3_t& view )
 	{
 		using set_abs_angle_fn = void( __thiscall* )( void*, const vec3_t& );
-		static auto o_set_abs_angles = reinterpret_cast< set_abs_angle_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1 E8" ) );
+		static auto o_set_abs_angles = reinterpret_cast< set_abs_angle_fn >( g_game_modules->get( client_dll ).find_pattern( "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1 E8" ) );
 		o_set_abs_angles( this, view );
 	}
 
@@ -440,13 +440,13 @@ public:
 
 	int& get_take_damage( )
 	{
-		static const std::uintptr_t take_damage_offset = *reinterpret_cast< std::uintptr_t* >( c_memory::find_pattern( "client.dll", "80 BE ? ? ? ? ? 75 46 8B 86" ) + 0x2 );
+		static const std::uintptr_t take_damage_offset = *reinterpret_cast< std::uintptr_t* >( g_game_modules->get( client_dll ).find_pattern( "80 BE ? ? ? ? ? 75 46 8B 86" ) + 0x2 );
 		return *reinterpret_cast< int* >( reinterpret_cast< std::uintptr_t >( this ) + take_damage_offset );
 	}
 
 	c_user_cmd& get_last_command( )
 	{
-		static const std::uintptr_t last_command_offset = *reinterpret_cast< std::uintptr_t* >( c_memory::find_pattern( "client.dll", "8D 8E ? ? ? ? 89 5C 24 3C" ) + 0x2 );
+		static const std::uintptr_t last_command_offset = *reinterpret_cast< std::uintptr_t* >( g_game_modules->get( client_dll ).find_pattern( "8D 8E ? ? ? ? 89 5C 24 3C" ) + 0x2 );
 		return *reinterpret_cast< c_user_cmd* >( reinterpret_cast< std::uintptr_t >( this ) + last_command_offset );
 	}
 #pragma endregion
@@ -563,7 +563,7 @@ public:
 
 	[[nodiscard]] c_utl_vector<c_animation_layer>& get_animation_overlays( )
 	{
-		static const std::uintptr_t animation_overlays_offset = *reinterpret_cast< std::uintptr_t* >( c_memory::find_pattern( "client.dll", "8B 89 ? ? ? ? 8D 0C D1" ) + 0x2 );
+		static const std::uintptr_t animation_overlays_offset = *reinterpret_cast< std::uintptr_t* >( g_game_modules->get( client_dll ).find_pattern( "8B 89 ? ? ? ? 8D 0C D1" ) + 0x2 );
 		return *reinterpret_cast< c_utl_vector<c_animation_layer>* >( reinterpret_cast< std::uintptr_t >( this ) + animation_overlays_offset );
 	}
 
@@ -672,31 +672,31 @@ public:
 	{
 		// @xref: from sub with "CLIENT:  %s(%s) thinking for %.02f ms!!!\n"
 		using physics_run_think_fn = bool( __thiscall* )( void*, int );
-		static auto o_physics_run_think = reinterpret_cast< physics_run_think_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 EC 10 53 56 57 8B F9 8B 87" ) );
+		static auto o_physics_run_think = reinterpret_cast< physics_run_think_fn >( g_game_modules->get( client_dll ).find_pattern( "55 8B EC 83 EC 10 53 56 57 8B F9 8B 87" ) );
 		return o_physics_run_think( this, nThinkMethod );
 	}
 
 	int equip_wearable( c_base_combat_weapon* wearable )
 	{
 		using equip_wearable_fn = int( __thiscall* )( c_base_combat_weapon* wearable, c_base_entity* player );
-		static auto o_equip_wearable = reinterpret_cast< equip_wearable_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 EC 10 53 8B 5D 08 57 8B F9" ) );
+		static auto o_equip_wearable = reinterpret_cast< equip_wearable_fn >( g_game_modules->get( client_dll ).find_pattern( "55 8B EC 83 EC 10 53 8B 5D 08 57 8B F9" ) );
 		return o_equip_wearable( wearable, this );
 	}
 
 	void invalidate_bone_cache( )
 	{
 		typedef void( __thiscall* invalidate_bone_cache_fn )( void* );
-		static auto o_invalidate_bone_cache = reinterpret_cast< invalidate_bone_cache_fn >( c_memory::find_pattern( "client.dll", "80 3D ? ? ? ? ? 74 16 A1 ? ? ? ? 48 C7 81" ) );
+		static auto o_invalidate_bone_cache = reinterpret_cast< invalidate_bone_cache_fn >( g_game_modules->get( client_dll ).find_pattern( "80 3D ? ? ? ? ? 74 16 A1 ? ? ? ? 48 C7 81" ) );
 
 		if ( this && o_invalidate_bone_cache )
 			o_invalidate_bone_cache( this );
 	}
 
 	void modify_eye_position( const c_csgo_player_anim_state* anim_state, vec3_t* position ) const;
-	static c_base_entity*	get_local_player( );
+	static c_base_entity* get_local_player( );
 	int						get_sequence_activity( int sequence );
 	int						get_max_health( );
-	mstudiobbox_t*			get_hitbox( int hb_id );
+	mstudiobbox_t* get_hitbox( int hb_id );
 	std::optional<vec3_t>	get_bone_position( int bone_index );
 	int						get_bone_by_hash( const fnv1a_t bone_hash ) const;
 	std::optional<vec3_t>	get_hitbox_position( const int hitbox );
@@ -707,7 +707,7 @@ public:
 	bool					is_visible( c_base_entity* entity, const vec3_t& end_pos, bool smoke_check = false );
 	bool					is_breakable( );
 	bool					is_reloading( );
-	c_weapon_cs_base*		get_active_weapon( );
+	c_weapon_cs_base* get_active_weapon( );
 	vec3_t					get_shoot_pos( bool interpolated = false );
 	bool					has_c4( );
 
@@ -932,7 +932,7 @@ public:
 	c_utl_vector<c_ref_counted*>& get_visuals_data_processors( )
 	{
 		// @xref: "Original material not found! Name: %s"
-		static const std::uintptr_t visuals_data_processors_offset = *reinterpret_cast< std::uintptr_t* >( c_memory::find_pattern( "client.dll", "81 C7 ? ? ? ? 8B 4F 0C 8B 57 04 89 4C" ) + 0x2 );
+		static const std::uintptr_t visuals_data_processors_offset = *reinterpret_cast< std::uintptr_t* >( g_game_modules->get( client_dll ).find_pattern( "81 C7 ? ? ? ? 8B 4F 0C 8B 57 04 89 4C" ) + 0x2 );
 		return *reinterpret_cast< c_utl_vector<c_ref_counted*>* >( reinterpret_cast< std::uintptr_t >( this ) + visuals_data_processors_offset );
 	}
 };
@@ -1037,13 +1037,13 @@ public:
 
 	c_utl_vector<i_ref_counted*>& get_custom_materials( )
 	{
-		static auto address = *reinterpret_cast< std::uintptr_t* >( c_memory::find_pattern( "client.dll", "83 BE ? ? ? ? ? 7F 67" ) + 0x2 ) - 0xC;
+		static auto address = *reinterpret_cast< std::uintptr_t* >( g_game_modules->get( client_dll ).find_pattern( "83 BE ? ? ? ? ? 7F 67" ) + 0x2 ) - 0xC;
 		return *reinterpret_cast< c_utl_vector<i_ref_counted*>* >( reinterpret_cast< std::uintptr_t >( this ) + address );
 	}
 
 	bool& is_custom_material_initialized( )
 	{
-		static auto address = *reinterpret_cast< std::uintptr_t* >( c_memory::find_pattern( "client.dll", "C6 86 ? ? ? ? ? FF 50 04" ) + 0x2 );
+		static auto address = *reinterpret_cast< std::uintptr_t* >( g_game_modules->get( client_dll ).find_pattern( "C6 86 ? ? ? ? ? FF 50 04" ) + 0x2 );
 		return *reinterpret_cast< bool* >( reinterpret_cast< std::uintptr_t >( this ) + address );
 	}
 

@@ -83,7 +83,7 @@ public:
 	studio_sequences_desc_t seqdesc( int sequence )
 	{
 		using seqdesc_fn = int( __thiscall* )( void*, int );
-		static auto o_seqdesc = c_memory::get_absolute<seqdesc_fn>( c_memory::find_pattern( "client.dll", "E8 ? ? ? ? 03 40 04" ) + 0x1 );
+		static auto o_seqdesc = c_memory::get_absolute<seqdesc_fn>( g_game_modules->get( client_dll ).find_pattern( "E8 ? ? ? ? 03 40 04" ) + 0x1 );
 
 		return *reinterpret_cast< studio_sequences_desc_t* >( o_seqdesc( this, sequence ) );
 	}

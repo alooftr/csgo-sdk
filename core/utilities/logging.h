@@ -67,6 +67,6 @@ logging::pop_color( );
 logging::print( xor_str( log ), __VA_ARGS__ ); \
 logging::pop_color( );
 
-#define error_log( log, ...) logging::push_color( foreground_intense_red); \
+#define debug_log_error( log, ...) logging::push_color( foreground_intense_red); \
 logging::print( xor_str( log ), __VA_ARGS__ ); \
 logging::pop_color( );

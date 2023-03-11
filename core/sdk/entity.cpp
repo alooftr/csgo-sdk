@@ -19,7 +19,7 @@ int c_base_entity::get_sequence_activity( int sequence )
 		return -1;
 
 	using get_sequence_activity_fn = int( __fastcall* )( void*, void*, int );
-	static auto o_get_sequence_activity = reinterpret_cast< get_sequence_activity_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 53 8B 5D 08 56 8B F1 83" ) ); // @xref: "Need to handle the activity %d\n"
+	static auto o_get_sequence_activity = reinterpret_cast< get_sequence_activity_fn >( g_game_modules->get( client_dll ).find_pattern(  "55 8B EC 53 8B 5D 08 56 8B F1 83" ) ); // @xref: "Need to handle the activity %d\n"
 	assert( o_get_sequence_activity != nullptr );
 
 	return o_get_sequence_activity( this, studio_hdr, sequence );
@@ -188,11 +188,11 @@ void c_base_entity::post_think( )
 	// @ida postthink: client.dll 56 8B 35 ? ? ? ? 57 8B F9 8B CE 8B 06 FF 90 ? ? ? ? 8B 07
 
 	using post_think_v_physics_fn = bool( __thiscall* )( c_base_entity* );
-	static auto o_post_think_v_physics = reinterpret_cast< post_think_v_physics_fn >( c_memory::find_pattern( "client.dll", "55 8B EC 83 E4 F8 81 EC ? ? ? ? 53 8B D9 56 57 83 BB" ) );
+	static auto o_post_think_v_physics = reinterpret_cast< post_think_v_physics_fn >( g_game_modules->get( client_dll ).find_pattern(  "55 8B EC 83 E4 F8 81 EC ? ? ? ? 53 8B D9 56 57 83 BB" ) );
 	assert( o_post_think_v_physics != nullptr );
 
 	using simulate_player_simulated_entities_fn = void( __thiscall* )( c_base_entity* );
-	static auto o_simulate_player_simulated_entities = reinterpret_cast< simulate_player_simulated_entities_fn >( c_memory::find_pattern( "client.dll", "56 8B F1 57 8B BE ? ? ? ? 83 EF 01 78 74" ) );
+	static auto o_simulate_player_simulated_entities = reinterpret_cast< simulate_player_simulated_entities_fn >( g_game_modules->get( client_dll ).find_pattern(  "56 8B F1 57 8B BE ? ? ? ? 83 EF 01 78 74" ) );
 	assert( o_simulate_player_simulated_entities != nullptr );
 
 	g_game_interfaces->mdl_cache->begin_lock( );
@@ -299,7 +299,7 @@ c_weapon_cs_base* c_base_entity::get_active_weapon( )
 bool c_base_entity::has_c4( )
 {
 	using has_c4_fn = bool( __thiscall* )( void* );
-	static auto o_has_c4 = reinterpret_cast< has_c4_fn >( c_memory::find_pattern( "client.dll", "56 8B F1 85 F6 74 31" ) );
+	static auto o_has_c4 = reinterpret_cast< has_c4_fn >( g_game_modules->get( client_dll ).find_pattern(  "56 8B F1 85 F6 74 31" ) );
 
 	assert( o_has_c4 != nullptr );
 

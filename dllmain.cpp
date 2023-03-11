@@ -40,7 +40,6 @@ DWORD WINAPI on_attach( LPVOID parameter )
 
 			if ( !g_math::setup( ) )
 				throw std::runtime_error( xor_str( "failed to setup math library" ) );
-
 		}
 		time( &end );
 
@@ -50,7 +49,7 @@ DWORD WINAPI on_attach( LPVOID parameter )
     catch ( const std::exception& ex )
     {
         // print error message
-        error_log( "[error] {}", ex.what( ) );
+        debug_log_error( "[error] {}", ex.what( ) );
 
 #ifdef _DEBUG
         // show error message window (or replace to your exception handler)
