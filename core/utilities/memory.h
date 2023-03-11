@@ -92,18 +92,17 @@ public:
 	{
 		return ( t )( address + 4 + *reinterpret_cast< std::int32_t* >( address ) );
 	}
-
 	/// @returns : all cross-references (x-refs) addresses in given range
-	std::vector<std::uintptr_t> GetCrossReferences( const std::uintptr_t uAddress, std::uintptr_t uRegionStart, const std::size_t uRegionSize );
+	std::vector<std::uintptr_t> get_cross_references( const std::uintptr_t address, std::uintptr_t region_start, const std::size_t region_size );
 	/// @param szSectionName : section to get info of (e.g. ".rdata", ".text", etc)
 	/// @param puSectionStart : output for section start address
 	/// @param puSectionSize : output for section size
 	/// @returns : true if section has been found
-	bool GetSectionInfo( const std::uintptr_t uBaseAddress, const std::string_view szSectionName, std::uintptr_t* puSectionStart, std::uintptr_t* puSectionSize );
+	bool get_section_info( const std::uintptr_t base_address, const std::string_view section_name, std::uintptr_t* section_start, std::uintptr_t* section_size );
 	/// @returns : type descriptor address of given vtable name in given module
-	std::uintptr_t GetVTableTypeDescriptor( const std::string_view szModuleName, const std::string_view szTableName );
+	std::uintptr_t get_vtable_type_descriptor( const std::string_view module_name, const std::string_view table_name );
 	/// @returns : pointer of given vtable name in given module @credits: hinnie
-	std::uintptr_t* GetVTablePointer( const std::string_view szModuleName, const std::string_view szTableName );
+	std::uintptr_t* get_vtable_pointer( const std::string_view module_name, const std::string_view table_name );
 
 	/// @returns : virtual function pointer of specified class at given index
     template <typename T = void*>
