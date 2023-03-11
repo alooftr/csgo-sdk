@@ -6,8 +6,6 @@
 #include <unordered_map>
 // used: winapi, xor_str
 #include "../common.h"
-// used: minhook library
-#include "../../ext/minhook/minhook.h"
 // used:: logging namespace
 #include "logging.h"
 
@@ -74,6 +72,8 @@ struct module_handle_info_t
 class c_memory
 {
 public:
+	/* main */
+
     /// @param moduleName : module name to search base handle for, empty means current module
     /// @returns : base handle of given module name
     static module_handle_info_t get_module_handle( const std::string_view module_name );
@@ -125,107 +125,6 @@ public:
 	static std::string bytes_to_pattern( const std::uint8_t* bytes, const std::size_t size );
 };
 
-/*
- * detour hooking implementation using minhook
- * @credits: https://github.com/TsudaKageyu/minhook
- */
-
-class c_detour_hook
-{
-public:
-	c_detour_hook( ) = default;
-
-	explicit c_detour_hook( void* func, void* detour )
-		: base_fn( func ), replace_fn( detour )
-	{ }
-
-	/* first hook setup */
-	bool create( void* func, void* detour )
-	{
-		base_fn = func;
-
-		if ( base_fn == nullptr )
-			return false;
-
-		replace_fn = detour;
-
-		if ( replace_fn == nullptr )
-			return false;
-
-		const MH_STATUS status = MH_CreateHook( base_fn, replace_fn, &original_fn );
-
-		if ( status != MH_OK )
-			throw std::runtime_error( std::format( "failed to create hook function, status: {}\nbase function -> {:#08x}", MH_StatusToString( status ), reinterpret_cast< std::uintptr_t >( base_fn ) ) );
-
-		if ( !this->replace( ) )
-			return false;
-
-		return true;
-	}
-
-	/* replace function to our modified */
-	bool replace( )
-	{
-		// check is hook be created
-		if ( base_fn == nullptr )
-			return false;
-
-		// check is function not already hooked
-		if ( hooked )
-			return false;
-
-		const MH_STATUS status = MH_EnableHook( base_fn );
-
-		if ( status != MH_OK )
-			throw std::runtime_error( std::format( "failed to enable hook function, status: {}\nbase function -> {:#08X} address", MH_StatusToString( status ), reinterpret_cast< std::uintptr_t >( base_fn ) ) );
-
-		// switch hook state
-		hooked = true;
-		return true;
-	}
-
-	/* replace swaped modified function back to original */
-	bool restore( )
-	{
-		// check is function hooked
-		if ( !hooked )
-			return false;
-
-		const MH_STATUS status = MH_DisableHook( base_fn );
-
-		if ( status != MH_OK )
-			throw std::runtime_error( std::format( "failed to restore hook, status: {}\n base function -> {:#08X} address", MH_StatusToString( status ), reinterpret_cast< std::uintptr_t >( base_fn ) ) );
-
-		// switch hook state
-		hooked = false;
-		return true;
-	}
-
-	/* get original function pointer (not a call!) */
-	template <typename fn>
-	fn get_original( )
-	{
-		return static_cast< fn >( original_fn );
-	}
-
-	/* returns hook state */
-	inline bool is_hooked( ) const
-	{
-		return hooked;
-	}
-
-private:
-	// Values
-	/* hook state */
-	bool hooked = false;
-	/* function base address */
-	void* base_fn = nullptr;
-	/* in future that is being modified and replace original */
-	void* replace_fn = nullptr;
-	/* saved function to get available restore hook later */
-	void* original_fn = nullptr;
-};
-
 /* modules pointer as we normally hooking with game's modules memory */
 class c_module
 {
@@ -257,8 +156,8 @@ public:
 		return c_memory::get_proc_address( this->handle, proc_name );
 	}
 
-private:
 	// only used for get_interface
+private:
 	class c_interface_register
 	{
 	public:
