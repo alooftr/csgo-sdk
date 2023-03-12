@@ -20,6 +20,12 @@
 #include "interfaces/ilocalize.h"
 #include "interfaces/iprediction.h"
 #include "interfaces/ifilesystem.h"
+#include "interfaces/imaterialsystem.h"
+#include "interfaces/imodelrender.h"
+#include "interfaces/idebugoverlay.h"
+#include "interfaces/iinput.h"
+#include "interfaces/iphysicsurfaceprop.h"
+#include "interfaces/iglowmanager.h"
 
 /* holding game's interfaces pointer */
 class c_game_interfaces
@@ -36,7 +42,7 @@ public:
 	i_key_values_system* key_values_system = nullptr;
 	i_client_entity_list* entity_list = nullptr;
 	i_game_types* game_types = nullptr;
-	iv_model_info* model_info = nullptr;
+	i_model_info* model_info = nullptr;
 	i_engine_trace* engine_trace = nullptr;
 	i_mdl_cache* mdl_cache = nullptr;
 	i_client_mode_shared* client_mode = nullptr;
@@ -50,6 +56,13 @@ public:
 	i_prediction* prediction = nullptr;
 	i_game_movement* game_movement = nullptr;
 	i_file_system* file_system = nullptr;
+	i_material_system* material_system = nullptr;
+	i_model_render* model_render = nullptr;
+	i_studio_render* studio_render = nullptr;
+	i_debug_overlay* debug_overlay = nullptr;
+	i_input* input = nullptr;
+	i_physics_surface_props* physics_surface_props = nullptr;
+	i_glow_object_manager* glow_manager = nullptr;
 };
 
 // const pointer

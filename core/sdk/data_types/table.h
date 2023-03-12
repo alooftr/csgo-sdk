@@ -5,15 +5,15 @@
 
 enum e_send_prop_type : int
 {
-	DPT_INT = 0,
-	DPT_FLOAT,
-	DPT_VECTOR,
-	DPT_VECTOR2D,
-	DPT_STRING,
-	DPT_ARRAY,
-	DPT_DATATABLE,
-	DPT_INT64,
-	DPT_SENDPROPTYPEMAX
+	dpt_int = 0,
+	dpt_float,
+	dpt_vector,
+	dpt_vector2d,
+	dpt_string,
+	dpt_array,
+	dpt_datatable,
+	dpt_int64,
+	dpt_sendproptypemax
 };
 
 struct recv_prop_t;
@@ -21,15 +21,15 @@ struct data_variant_t
 {
 	union
 	{
-		float	Float;
-		long	Int;
-		char* String;
-		void* Data;
-		float	Vector[ 3 ];
-		int64_t Int64;
+		float	fl;
+		long	i;
+		char* str;
+		void* ptr;
+		float	vector[ 3 ];
+		int64_t i64;
 	};
 
-	e_send_prop_type iType;
+	e_send_prop_type type;
 };
 
 class c_recv_proxy_data

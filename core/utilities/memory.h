@@ -7,7 +7,7 @@
 // used: winapi, xor_str
 #include "../common.h"
 // used:: logging namespace
-#include "logging.h"
+#include "logger.h"
 
 #pragma region memory_modules_definitions
 #define engine_dll              xor_str("engine.dll")
@@ -35,21 +35,21 @@
 class c_wrapped_protect
 {
 public:
-	c_wrapped_protect( void* base_address, const std::size_t length, const DWORD dwFlags ) :
-		base_address( base_address ), length( length )
+	c_wrapped_protect( void* base_address, const std::size_t length, const DWORD flags ) :
+		m_base_address( base_address ), m_length( length )
 	{
-		if ( !VirtualProtect( base_address, length, dwFlags, &old_flags ) )
+		if ( !VirtualProtect( base_address, length, flags, &m_old_flags ) )
 			throw std::system_error( GetLastError( ), std::system_category( ), xor_str( "failed to protect region" ) );
 	}
 
 	~c_wrapped_protect( )
 	{
-		VirtualProtect( base_address, length, old_flags, &old_flags );
+		VirtualProtect( m_base_address, m_length, m_old_flags, &m_old_flags );
 	}
 private:
-	void* base_address;
-	std::size_t		length;
-	DWORD			old_flags;
+	void* m_base_address;
+	std::size_t		m_length;
+	DWORD			m_old_flags;
 };
 
 struct module_handle_info_t
@@ -110,6 +110,7 @@ public:
 	template <typename T = void*>
 	static constexpr T get_vfunc( void* this_ptr, std::size_t index )
 	{
+		debug_log( "getting virual function index: [{}] from [{:#08x}]", index, reinterpret_cast< std::uintptr_t >( this_ptr ) );
 		return ( *static_cast< T** >( this_ptr ) )[ index ];
 	}
 	// call virtual function of specified class at given index

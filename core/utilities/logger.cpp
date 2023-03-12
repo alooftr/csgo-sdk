@@ -1,6 +1,6 @@
-#include "logging.h"
+#include "logger.h"
 
-bool logging::attach_console( const char* title )
+bool c_logger::attach_console( const char* title )
 {
 	if ( !AllocConsole( ) )
 		return false;
@@ -18,7 +18,7 @@ bool logging::attach_console( const char* title )
 	return true;
 }
 
-void logging::detach_console( )
+void c_logger::detach_console( )
 {
 	fclose( stream );
 

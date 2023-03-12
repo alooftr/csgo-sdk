@@ -22,11 +22,11 @@
 #define foreground_intense_cyan	(foreground_cyan | FOREGROUND_INTENSITY)
 #define foreground_intense_magenta	(foreground_magenta | FOREGROUND_INTENSITY)
 
-namespace logging
+class c_logger
 {
-	inline FILE* stream;
-	inline std::uint16_t console_color = foreground_white;
-
+	FILE* stream = nullptr;
+	std::uint16_t console_color = foreground_white;
+public:
 	bool attach_console( const char* title );
 	void detach_console( );
 
@@ -34,7 +34,7 @@ namespace logging
 	void print( const std::string_view text, const Args_t& ... argList )
 	{
 #ifdef _DEBUG
-		const std::string time = std::vformat( xor_str("[{:%d-%m-%Y-%X}]->"), std::make_format_args( std::chrono::system_clock::now( ) ) );
+		const std::string time = std::vformat( xor_str( "[{:%d-%m-%Y-%X}]->" ), std::make_format_args( std::chrono::system_clock::now( ) ) );
 
 		// print to console
 		SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), foreground_intense_green );
@@ -57,16 +57,18 @@ namespace logging
 	{
 		console_color = foreground_intense_white;
 	}
-}
+};
 
-#define debug_log( log, ... ) logging::push_color( foreground_intense_white ); \
-logging::print( xor_str( log ), __VA_ARGS__ ); \
-logging::pop_color( );
+inline const std::unique_ptr<c_logger> g_logger{ new c_logger( ) };
 
-#define debug_log_ok( log, ... ) logging::push_color( foreground_intense_cyan ); \
-logging::print( xor_str( log ), __VA_ARGS__ ); \
-logging::pop_color( );
+#define debug_log( log, ... ) g_logger->push_color( foreground_intense_white ); \
+g_logger->print( xor_str( log ), __VA_ARGS__ ); \
+g_logger->pop_color( );
 
-#define debug_log_error( log, ...) logging::push_color( foreground_intense_red); \
-logging::print( xor_str( log ), __VA_ARGS__ ); \
-logging::pop_color( );
+#define debug_log_ok( log, ... ) g_logger->push_color( foreground_intense_cyan ); \
+g_logger->print( xor_str( log ), __VA_ARGS__ ); \
+g_logger->pop_color( );
+
+#define debug_log_error( log, ...) g_logger->push_color( foreground_intense_red); \
+g_logger->print( xor_str( log ), __VA_ARGS__ ); \
+g_logger->pop_color( );

@@ -165,10 +165,10 @@ class i_material;
 class c_utl_buffer;
 class i_client_renderable;
 
-class iv_model_info
+class i_model_info
 {
 public:
-	virtual							~iv_model_info( )
+	virtual							~i_model_info( )
 	{ }
 	virtual const model_t* get_model( int model_index ) const = 0;
 	virtual int						get_model_index( const char* name ) const = 0;

@@ -270,7 +270,7 @@ bool c_base_entity::is_visible( c_base_entity* entity, const vec3_t& end_pos, bo
 	// trace check
 	if ( ( trace.is_visible( ) || trace.hit_entity == entity ) &&
 		// smoke check
-		!( smoke_check && g_utils::line_goes_through_smoke( vecStart, end_pos ) ) )
+		!( smoke_check && g_utils->line_goes_through_smoke( vecStart, end_pos ) ) )
 		return true;
 
 	return false;

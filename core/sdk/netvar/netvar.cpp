@@ -20,7 +20,7 @@ bool c_netvar_manager::setup( const char* file_name )
 
 #ifdef _DEBUG
 	// open our dump file to write in (here is not exception handle because dump is not critical)
-	dump_file.open( g_utils::get_game_path( ).append( file_name ), std::ios::out | std::ios::trunc );
+	dump_file.open( g_utils->get_game_path( ).append( file_name ), std::ios::out | std::ios::trunc );
 
 	if ( dump_file.good( ) )
 		// write current date, time and info
@@ -109,22 +109,22 @@ void c_netvar_manager::store_props( const char* class_name, recv_table_t* recv_t
 			// first char is 'D' ("DT" - "DataTable")
 			child_table->net_table_name[ 0 ] == 'D' &&
 			// type is data table
-			current_prop->recv_type == DPT_DATATABLE )
+			current_prop->recv_type == dpt_datatable )
 			// recursively get props in all child tables
 			store_props( class_name, child_table, static_cast< std::uintptr_t >( current_prop->offset ) + offset, depth + 1 );
 
-		const std::uintptr_t uTotalOffset = static_cast< std::uintptr_t >( current_prop->offset ) + offset;
+		const std::uintptr_t total_offset = static_cast< std::uintptr_t >( current_prop->offset ) + offset;
 
 		// check if we have already grabbed property
 		if ( !map_props[ total_hash ].offset )
 		{
 #ifdef _DEBUG
 			if ( dump_file.good( ) )
-				dump_file << std::format( "{0}\t{1} {2} = 0x{3:04X};\n", szDepth, get_property_type( current_prop ), current_prop->var_name, uTotalOffset );
+				dump_file << std::format( "{0}\t{1} {2} = 0x{3:04X};\n", szDepth, get_property_type( current_prop ), current_prop->var_name, total_offset );
 #endif
 
 			// write values to map entry
-			map_props[ total_hash ] = { current_prop, uTotalOffset };
+			map_props[ total_hash ] = { current_prop, total_offset };
 
 			// count total stored props
 			stored_props++;
@@ -137,36 +137,36 @@ void c_netvar_manager::store_props( const char* class_name, recv_table_t* recv_t
 
 std::string c_netvar_manager::get_property_type( const recv_prop_t* recv_prop ) const
 {
-	static c_standart_recv_proxies* pStandartRecvProxies = g_game_interfaces->client->get_standard_recv_proxies( );
+	static c_standart_recv_proxies* standart_recv_proxies = g_game_interfaces->client->get_standard_recv_proxies( );
 
 	if ( recv_prop == nullptr )
 		return "";
 
-	recv_var_proxy_fn pProxyFn = recv_prop->proxy_fn;
+	recv_var_proxy_fn proxy_fn = recv_prop->proxy_fn;
 
 	switch ( recv_prop->recv_type )
 	{
-		case DPT_INT:
+		case dpt_int:
 			// @credits: hinnie
-			if ( pProxyFn == pStandartRecvProxies->int32_to_int8 )
+			if ( proxy_fn == standart_recv_proxies->int32_to_int8 )
 				return "byte";
-			else if ( pProxyFn == pStandartRecvProxies->int32_to_int16 )
+			else if ( proxy_fn == standart_recv_proxies->int32_to_int16 )
 				return "short";
 
 			return "int";
-		case DPT_FLOAT:
+		case dpt_float:
 			return "float";
-		case DPT_VECTOR:
+		case dpt_vector:
 			return "vec3_t";
-		case DPT_VECTOR2D:
+		case dpt_vector2d:
 			return "vec2_t";
-		case DPT_STRING:
+		case dpt_string:
 			return std::vformat( "char[{:d}]", std::make_format_args( recv_prop->string_buffer_size ) );
-		case DPT_ARRAY:
+		case dpt_array:
 			return std::vformat( "array[{:d}]", std::make_format_args( recv_prop->elements ) );
-		case DPT_DATATABLE:
+		case dpt_datatable:
 			return "void*";
-		case DPT_INT64:
+		case dpt_int64:
 			return "std::int64_t";
 		default:
 			break;

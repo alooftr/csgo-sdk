@@ -2,7 +2,7 @@
 // used PEB32
 #include "pe32.h"
 // used: logging namespace
-#include "logging.h"
+#include "logger.h"
 
 module_handle_info_t c_memory::get_module_handle( const std::string_view module_name )
 {

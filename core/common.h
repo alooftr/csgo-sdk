@@ -1,4 +1,8 @@
 #pragma once
+/* directx includes */
+/*
+	commonly used header to include in here
+*/
 
 /* winapi */
 #include <windows.h>
@@ -7,7 +11,7 @@
 #include <cmath>
 #include <string>
 
-/* directx includes */
+/* dx9 */
 #include <d3d9.h>
 #include <d3dx9.h>
 

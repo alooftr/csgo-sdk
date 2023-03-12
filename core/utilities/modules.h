@@ -1,6 +1,9 @@
 #pragma once
 
+// used: c_memory
 #include "memory.h"
+// used: fnv1a hashing
+#include "fnv1a.h"
 
 /* modules pointer as we normally hooking with game's modules memory */
 class c_module
@@ -94,12 +97,12 @@ class c_game_modules
 public:
 	bool setup( );
 
-	auto get( std::string name )
+	auto get( const char* name )
 	{
-		return this->modules[ name ];
+		return this->modules[ fnv1a::hash( name ) ];
 	}
 private:
-	std::unordered_map<std::string, c_module> modules = { };
+	std::unordered_map<fnv1a_t, c_module> modules = { };
 };
 
 inline const std::unique_ptr<c_game_modules> g_game_modules{ new c_game_modules( ) };

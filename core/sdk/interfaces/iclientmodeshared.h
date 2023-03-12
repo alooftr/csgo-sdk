@@ -173,4 +173,9 @@ public:
 	vec3_t			view_point;			// 0x4D90
 	std::byte		pad9[ 0xD0 ];				// 0x4D9C
 	c_event_info* events;				// 0x4E6C
+
+	void force_update( )
+	{
+		this->delta_tick = -1;
+	}
 }; // Size: 0x4E70

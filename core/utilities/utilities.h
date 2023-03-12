@@ -7,8 +7,11 @@
 
 #include "../sdk/data_types/vector.h"
 
-namespace g_utils
+/* misc functions */
+
+class c_utils
 {
+public:
 	std::filesystem::path get_game_path( );
 
 	inline std::string random_string( const size_t length )
@@ -33,4 +36,13 @@ namespace g_utils
 	}
 
 	bool line_goes_through_smoke( const vec3_t& start, const vec3_t& end, const bool grenade_bloat = true );
-}
+	std::uintptr_t* find_hud_element( const char* name );
+
+	// cl_full_update + update weapon hud
+	void force_update( );
+
+	// get weapon icon font base on their definition index
+	const char8_t* get_weapon_icon( short item_definition_index );
+};
+
+inline std::unique_ptr<c_utils> g_utils{ new c_utils( ) };

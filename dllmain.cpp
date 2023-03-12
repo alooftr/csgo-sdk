@@ -1,7 +1,7 @@
 // used: sleep_for
 #include <thread>
 // used: logging namespace
-#include "core/utilities/logging.h"
+#include "core/utilities/logger.h"
 // used: c_memory pointer for get module
 #include "core/utilities/modules.h"
 // used: g_modules && g_interfaces
@@ -20,7 +20,7 @@ DWORD WINAPI on_attach( LPVOID parameter )
 			std::this_thread::sleep_for( 200ms );
 
 #ifdef _DEBUG
-        if ( !logging::attach_console( xor_str( "csgo-sdk dev's console" ) ) )
+        if ( !g_logger->attach_console( xor_str( "csgo-sdk dev's console" ) ) )
             throw std::runtime_error( xor_str( "failed to attach console" ) );
 #endif // _DEBUG
 
@@ -70,7 +70,7 @@ DWORD WINAPI on_detach( LPVOID parameter )
 		std::this_thread::sleep_for( 200ms );
 
 #ifdef _DEBUG
-    logging::detach_console( );
+    g_logger->detach_console( );
 #endif // _DEBUG
 
     // free our library memory from process and exit from our thread
