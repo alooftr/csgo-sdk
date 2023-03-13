@@ -282,6 +282,27 @@
     <ClInclude Include="core\sdk\interfaces\iglowmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\cheat\menu\imgui_extra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\draw\safe_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\smallest_pixel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\weapon_icons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\whitney.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\cheat\imgui_extra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\cheat\menu\framework\ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -360,6 +381,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\utilities\modules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\draw\safe_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\cheat\menu\imgui_extra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\cheat\imgui_extra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\cheat\menu\framework\ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

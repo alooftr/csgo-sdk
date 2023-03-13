@@ -161,7 +161,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="core\cheat\menu\imgui_extra.h" />
+    <ClInclude Include="core\cheat\menu\menu.h" />
     <ClInclude Include="core\common.h" />
+    <ClInclude Include="core\draw\safe_draw.h" />
     <ClInclude Include="core\sdk\animation.h" />
     <ClInclude Include="core\sdk\csgo.h" />
     <ClInclude Include="core\sdk\data_types\bitbuf.h" />
@@ -250,8 +253,14 @@
     <ClInclude Include="ext\minhook\hde\table64.h" />
     <ClInclude Include="ext\minhook\minhook.h" />
     <ClInclude Include="ext\minhook\trampoline.h" />
+    <ClInclude Include="resources\smallest_pixel.h" />
+    <ClInclude Include="resources\weapon_icons.h" />
+    <ClInclude Include="resources\whitney.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\cheat\menu\imgui_extra.cpp" />
+    <ClCompile Include="core\cheat\menu\menu.cpp" />
+    <ClCompile Include="core\draw\safe_draw.cpp" />
     <ClCompile Include="core\sdk\csgo.cpp" />
     <ClCompile Include="core\sdk\data_types\key_value.cpp" />
     <ClCompile Include="core\sdk\entity.cpp" />

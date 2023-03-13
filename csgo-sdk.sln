@@ -5,16 +5,32 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "csgo-sdk", "csgo-sdk.vcxproj", "{023F00C9-55F6-44EC-9254-425B3B7BBA55}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui-test-env", "..\imgui-test-env\imgui-test-env.vcxproj", "{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Debug|x64.ActiveCfg = Debug|x64
+		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Debug|x64.Build.0 = Debug|x64
 		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Debug|x86.ActiveCfg = Debug|Win32
 		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Debug|x86.Build.0 = Debug|Win32
+		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Release|x64.ActiveCfg = Release|x64
+		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Release|x64.Build.0 = Release|x64
 		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Release|x86.ActiveCfg = Release|Win32
 		{023F00C9-55F6-44EC-9254-425B3B7BBA55}.Release|x86.Build.0 = Release|Win32
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Debug|x64.ActiveCfg = Debug|x64
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Debug|x64.Build.0 = Debug|x64
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Debug|x86.ActiveCfg = Debug|Win32
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Debug|x86.Build.0 = Debug|Win32
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Release|x64.ActiveCfg = Release|x64
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Release|x64.Build.0 = Release|x64
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Release|x86.ActiveCfg = Release|Win32
+		{1F763EC9-1EB5-4334-8FFA-6A6EC63D72B8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
