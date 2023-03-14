@@ -161,6 +161,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="core\cheat\hooks\hooks.h" />
     <ClInclude Include="core\cheat\menu\imgui_extra.h" />
     <ClInclude Include="core\cheat\menu\menu.h" />
     <ClInclude Include="core\common.h" />
@@ -214,6 +215,7 @@
     <ClInclude Include="core\utilities\crc32.h" />
     <ClInclude Include="core\utilities\detour_hook.h" />
     <ClInclude Include="core\utilities\fnv1a.h" />
+    <ClInclude Include="core\utilities\input.h" />
     <ClInclude Include="core\utilities\logger.h" />
     <ClInclude Include="core\utilities\math.h" />
     <ClInclude Include="core\utilities\memory.h" />
@@ -258,6 +260,7 @@
     <ClInclude Include="resources\whitney.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\cheat\hooks\hooks.cpp" />
     <ClCompile Include="core\cheat\menu\imgui_extra.cpp" />
     <ClCompile Include="core\cheat\menu\menu.cpp" />
     <ClCompile Include="core\draw\safe_draw.cpp" />
@@ -265,6 +268,7 @@
     <ClCompile Include="core\sdk\data_types\key_value.cpp" />
     <ClCompile Include="core\sdk\entity.cpp" />
     <ClCompile Include="core\utilities\crc32.cpp" />
+    <ClCompile Include="core\utilities\input.cpp" />
     <ClCompile Include="core\utilities\logger.cpp" />
     <ClCompile Include="core\utilities\math.cpp" />
     <ClCompile Include="core\utilities\memory.cpp" />

@@ -18,7 +18,7 @@ public:
 	}
 
 private:
-	bool open_state = false;
+	bool open_state = true;
 
 	// tabs holder
 	class c_tabs
@@ -29,11 +29,10 @@ private:
 	};
 
 	template <std::size_t s>
-	void render_tabs( const char* tabs_id, std::array<c_tabs, s > tabs, int* current_tab, int old_current_tab );
+	void render_tabs( const char* tabs_id, std::array<c_tabs, s > tabs, int* current_tab );
 
 	/* 2 int for lerping animation */
 	int current_tab = 0;
-	int old_current_tab = 0;
 };
 
 inline const std::unique_ptr<c_menu> g_menu{ new c_menu( ) };

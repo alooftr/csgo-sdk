@@ -297,10 +297,13 @@
     <ClInclude Include="resources\whitney.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\cheat\imgui_extra.h">
+    <ClInclude Include="core\cheat\menu\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\cheat\menu\framework\ui.h">
+    <ClInclude Include="core\cheat\hooks\hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\utilities\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -389,10 +392,13 @@
     <ClCompile Include="core\cheat\menu\imgui_extra.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\cheat\imgui_extra.cpp">
+    <ClCompile Include="core\cheat\menu\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\cheat\menu\framework\ui.cpp">
+    <ClCompile Include="core\cheat\hooks\hooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\utilities\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

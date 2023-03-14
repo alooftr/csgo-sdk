@@ -297,20 +297,20 @@ bool ImGui::SelectableButton( const char* label, bool* selected, const ImVec2& s
 
 void ImGui::BeginChild( const char* str_id, const ImVec2& size_arg, bool border, ImGuiWindowFlags extra_flags, std::function<void( )> fn )
 { 
-	if ( extra_flags & ImGuiWindowFlags_MenuBar )
-	{
-		if ( ImGui::BeginMenuBar( ) )
-		{
-			ImGui::TextUnformatted( str_id );
-			ImGui::EndMenuBar( );
-		}
-	}
-
 	ImGui::BeginChild( str_id, size_arg, border, extra_flags );
 	{
+		if ( extra_flags & ImGuiWindowFlags_MenuBar )
+		{
+			if ( ImGui::BeginMenuBar( ) )
+			{
+				ImGui::TextUnformatted( str_id );
+				ImGui::EndMenuBar( );
+			}
+		}
+
 		ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( ImGui::GetStyle( ).FramePadding.x, -1 ) );
 		fn( );
-		ImGui::EndChild( );
+		ImGui::PopStyleVar( );
 	}
 	ImGui::EndChild( );
 }

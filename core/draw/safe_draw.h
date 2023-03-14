@@ -213,7 +213,9 @@ class c_safe_draw
 {
 public:
 	// setup fonts, style...
-	void setup( IDirect3DDevice9* device );
+	void setup( );
+	void destroy( );
+
 	bool did_setup = false;
 
 	// render the deque queue

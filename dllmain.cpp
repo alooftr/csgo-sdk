@@ -10,6 +10,12 @@
 #include "core/sdk/netvar/netvar.h"
 // used: g_math
 #include "core/utilities/math.h"
+// used: g_input
+#include "core/utilities/input.h"
+// used: g_safe_draw
+#include "core/draw/safe_draw.h"
+// used: g_hooks
+#include "core/cheat/hooks/hooks.h"
 
 DWORD WINAPI on_attach( LPVOID parameter )
 {
@@ -40,6 +46,13 @@ DWORD WINAPI on_attach( LPVOID parameter )
 
 			if ( !g_math::setup( ) )
 				throw std::runtime_error( xor_str( "failed to setup math library" ) );
+
+			if ( !g_input::setup( ) )
+				throw std::runtime_error( xor_str( "failed to setup window handle" ) );
+
+			if ( !g_hooks::setup( ) )
+				throw std::runtime_error( xor_str( "failed to setup hooks" ) );
+
 		}
 		time( &end );
 
@@ -69,8 +82,15 @@ DWORD WINAPI on_detach( LPVOID parameter )
 	while ( !GetAsyncKeyState( VK_END ) )
 		std::this_thread::sleep_for( 200ms );
 
+	// restore hooks and window handle
+	g_hooks::restore( );
+	g_input::restore( );
+
+	// destroy imgui backend
+	g_safe_draw->destroy( );
+
 #ifdef _DEBUG
-    g_logger->detach_console( );
+	g_logger->detach_console( );
 #endif // _DEBUG
 
     // free our library memory from process and exit from our thread

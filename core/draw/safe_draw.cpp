@@ -8,11 +8,11 @@
 #include "../../resources/smallest_pixel.h"
 #include "../../resources/weapon_icons.h"
 
-void c_safe_draw::setup( IDirect3DDevice9* device )
+void c_safe_draw::setup( )
 {
 	ImGui::CreateContext( );
 	ImGui_ImplWin32_Init( g_game_interfaces->window_handle );
-	ImGui_ImplDX9_Init( device );
+	ImGui_ImplDX9_Init( g_game_interfaces->device );
 
 	// color style
 	auto& style = ImGui::GetStyle( );
@@ -146,6 +146,13 @@ void c_safe_draw::setup( IDirect3DDevice9* device )
 	imgui_fonts::weapon_icons = io.Fonts->AddFontFromMemoryCompressedTTF( weapon_icons_compressed_data, weapon_icons_compressed_size, 14.f, &weapon_icons_config, icon_ranges );
 
 	did_setup = ImGuiFreeType::BuildFontAtlas( io.Fonts );
+}
+
+void c_safe_draw::destroy( )
+{ 
+	ImGui_ImplWin32_Shutdown( );
+	ImGui_ImplDX9_Shutdown( );
+	ImGui::DestroyContext( );
 }
 
 void c_safe_draw::render_draw_data( ImDrawList* draw_list )
@@ -359,13 +366,17 @@ void c_safe_draw::add_draw_list_text( ImDrawList* draw_list, const ImFont* font,
 	draw_list->PushTextureID( font->ContainerAtlas->TexID );
 
 	if ( flags & draw_text_dropshadow )
-		draw_list->AddText( font, font->FontSize, ImVec2( pos.x - 1.0f, pos.y + 1.0f ), clr_outline, str.c_str( ) );
+		draw_list->AddText( font, font->FontSize, ImVec2( pos.x + 1.0f, pos.y + 1.0f ), clr_outline, str.c_str( ) );
 	else if ( flags & draw_text_outline )
 	{
-		draw_list->AddText( font, font->FontSize, ImVec2( pos.x + 1.0f, pos.y - 1.0f ), clr_outline, str.c_str( ) );
-		draw_list->AddText( font, font->FontSize, ImVec2( pos.x - 1.0f, pos.y + 1.0f ), clr_outline, str.c_str( ) );
+		draw_list->AddText( font, font->FontSize, ImVec2( pos.x, pos.y + 1.0f ), clr_outline, str.c_str( ) );
+		draw_list->AddText( font, font->FontSize, ImVec2( pos.x, pos.y - 1.0f ), clr_outline, str.c_str( ) );
+		draw_list->AddText( font, font->FontSize, ImVec2( pos.x + 1.0f, pos.y ), clr_outline, str.c_str( ) );
+		draw_list->AddText( font, font->FontSize, ImVec2( pos.x - 1.0f, pos.y ), clr_outline, str.c_str( ) );
 	}
 
 	draw_list->AddText( font, font->FontSize, pos, clr, str.data( ) );
+	draw_list->AddText( font, font->FontSize, ImVec2( pos.x, pos.y - 1.0f ), clr_outline, str.c_str( ) );
+
 	draw_list->PopTextureID( );
 }
